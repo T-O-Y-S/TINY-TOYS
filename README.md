@@ -1,4 +1,4 @@
-# TINYTOYS
+# TOYS OSAKA
 
 [Synaptix](https://github.com/vvvvise/synaptix) Urban Art-Mesh, Visions of OSAKA.
 
@@ -16,17 +16,18 @@
 
 ```sh
 # 1. Create .env
-sudo mv dotenv.sample dotenv.development && sudo vi dotenv.development
-
-# 2. All Setup Processes
-bash scripts/setup.sh
+sudo mv dotenv.sample dotenv.development
+sudo vi dotenv.development
 ```
 
-### DEVELOPMENTS
+```sh
+# 2. All Setup Processes
+make setup
+```
 
 ```sh
-yarn build
-yarn dev
+# 3. dev after builded
+make build
 ```
 
 ## LICENSE
