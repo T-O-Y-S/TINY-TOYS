@@ -1,6 +1,6 @@
 # TINYTOYS
 
-TOYS for OpenAI: Tyny-Version.
+[Synaptix](https://github.com/vvvvise/synaptix) Urban Art-Mesh, Visions of OSAKA.
 
 ## TECH-STACS
 
