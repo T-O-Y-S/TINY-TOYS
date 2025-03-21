@@ -1,8 +1,19 @@
-# TINYTOYS
+<img width="200" src="https://github.com/user-attachments/assets/0823bf10-37f6-42e7-a7ce-933fe8f694d9" />
 
-TOYS for OpenAI: Tyny-Version.
+# @TOYS/TINY
+## AS @TOYS/OSAKA
 
-## TECH-STACS
+[Synaptix](https://github.com/vvvvise/synaptix) Urban Art-Mesh, Vynals of OSAKA.
+
+### <br />
+
+## PROJECTS:
+
+- [@VVVVISE/OSAKA](https://github.com/vvvvise/OSAKA)
+  - [@TOYS/OSAKA](https://github.com/T-O-Y-S/OSAKA)
+  - [@GRffMESH/OSAKA](https://github.com/graffmesh/OSAKA)
+
+## TECH-STACS:
 
 - NodeJS@20.18.3
 - Yarn/Berry@4.7.0
@@ -10,29 +21,30 @@ TOYS for OpenAI: Tyny-Version.
 - Vite
 - SWC
 
-## USAGE
+## USAGE:
 
 ### SETUP
 
 ```sh
 # 1. Create .env
-sudo mv dotenv.sample dotenv.development && sudo vi dotenv.development
-
-# 2. All Setup Processes
-bash scripts/setup.sh
+sudo mv dotenv.sample dotenv.development
+sudo vi dotenv.development
 ```
-
-### DEVELOPMENTS
 
 ```sh
-yarn build
-yarn dev
+# 2. All Setup Processes
+make setup
 ```
 
-## LICENSE
+```sh
+# 3. dev after builded
+make build
+```
+
+## LICENSE:
 
 MIT
 
-## AUTHOR
+## AUTHOR:
 
 Susumu Fujii as KANASIKA as SUJI(i)
