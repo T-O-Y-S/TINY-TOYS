@@ -7,7 +7,7 @@ const API_URL = import.meta.env.VITE_APP_SOCKET_URL;
 const MAX_MESSAGES = 5000;
 
 interface Message {
-  text: string;
+  content: string;
   isUser: boolean;
   id: string; // Add unique identifier
 }
@@ -15,10 +15,9 @@ interface Message {
 // Separate MessageComponent for better performance
 const MessageComponent = memo(({ msg }: { msg: Message }) => (
   <div className={msg.isUser ? 'user-message' : 'bot-message'}>
-    {msg.text}
+    {msg.content}
   </div>
 ));
-
 const App = () => {
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState<Message[]>([]);
@@ -68,7 +67,7 @@ const App = () => {
     setIsLoading(true);
 
     const userMessage = { 
-      text: trimmedInput, 
+      content: trimmedInput, 
       isUser: true,
       id: createMessageId()
     };
@@ -88,7 +87,7 @@ const App = () => {
         API_URL,
         {
           model: 'gpt-3.5-turbo',
-          messages: [{ role: 'user', content: userMessage.text }],
+          messages: [{ role: 'user', content: userMessage.content }],
         },
         {
           headers: {
@@ -102,7 +101,7 @@ const App = () => {
       clearTimeout(timeoutId);
 
       const botMessage = {
-        text: response.data.choices[0].message.content,
+        content: response.data.choices[0].message.content,
         isUser: false,
         id: createMessageId()
       };
@@ -114,7 +113,7 @@ const App = () => {
       }
 
       const errorMessage = {
-        text: axios.isAxiosError(error) && error.response?.status === 429 
+        content: axios.isAxiosError(error) && error.response?.status === 429 
           ? 'Rate limit exceeded. Please try again later.'
           : 'Error: Failed to get response',
         isUser: false,
@@ -131,36 +130,35 @@ const App = () => {
     }
   }, [input, setMessagesWithLimit, createMessageId, isLoading, cancelPreviousRequest]);
 
-  const handleKeyPress = useCallback((e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      sendMessage();
-    }
-  }, [sendMessage]);
+  const handleInput = (e: React.FormEvent<HTMLTextAreaElement>) => {
+    const value = e.currentTarget.value;
+    setInput(value); // If you're using state
+    debouncedSetInput(value); // If you're using debounce
+  };
 
   return (
     <div className="app">
-      <h1>TINY TOYS</h1>
-      <h2>A Tiny-Version of real to fun OpenAI.</h2>
+      <h1>TINYTOYS</h1>
+      <h2>A Tiny-Version of real to fun Opened-AI</h2>
       <div className="chat-box">
         {messages.map((msg) => (
-          <MessageComponent key={msg.id} msg={msg} />
-        ))}
+  <MessageComponent key={msg.id} msg={msg} />
+))}
       </div>
       <div className="input-area">
         <textarea
           className="input-field"
+          onCompositionEnd={handleInput}
+          onInput={handleInput}
           value={input}
-          onChange={(e) => debouncedSetInput(e.target.value)}
-          onKeyDown={handleKeyPress}
-          placeholder="Type a message..."
-          disabled={isLoading}
         />
         <button 
           onClick={sendMessage} 
           disabled={isLoading || !input.trim()}
         >
-          {isLoading ? 'Sending...' : 'Send'}
+          <span>
+            {isLoading ? 'Sending...' : '⌁'}
+          </span>
         </button>
       </div>
     </div>
