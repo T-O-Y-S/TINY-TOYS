@@ -1,6 +1,7 @@
 import { useState, useCallback, memo, useMemo, useRef, useEffect } from 'react';
 import axios from 'axios';
 import debounce from 'lodash/debounce';
+import './App.css';
 
 const OPENAI_API_KEY = import.meta.env.VITE_OPENAI_API_KEY;
 const API_URL = import.meta.env.VITE_APP_SOCKET_URL;
@@ -35,7 +36,7 @@ const App = () => {
 
   // Memoize the messages limit function
   const setMessagesWithLimit = useCallback((newMessages: Message[]) => {
-    return newMessages.length > MAX_MESSAGES 
+    return newMessages.length > MAX_MESSAGES
       ? newMessages.slice(-MAX_MESSAGES)
       : newMessages;
   }, []);
@@ -66,13 +67,15 @@ const App = () => {
     cancelPreviousRequest();
     setIsLoading(true);
 
-    const userMessage = { 
-      content: trimmedInput, 
+    const userMessage = {
+      content: trimmedInput,
       isUser: true,
-      id: createMessageId()
+      id: createMessageId(),
     };
-    
-    setMessages(prevMessages => setMessagesWithLimit([...prevMessages, userMessage]));
+
+    setMessages((prevMessages) =>
+      setMessagesWithLimit([...prevMessages, userMessage])
+    );
     setInput('');
 
     try {
@@ -103,32 +106,40 @@ const App = () => {
       const botMessage = {
         content: response.data.choices[0].message.content,
         isUser: false,
-        id: createMessageId()
+        id: createMessageId(),
       };
 
-      setMessages(prevMessages => setMessagesWithLimit([...prevMessages, botMessage]));
+      setMessages((prevMessages) =>
+        setMessagesWithLimit([...prevMessages, botMessage])
+      );
     } catch (error) {
       if (axios.isAxiosError(error) && error.name === 'CanceledError') {
         return; // Don't show error for cancelled requests
       }
 
       const errorMessage = {
-        content: axios.isAxiosError(error) && error.response?.status === 429 
-          ? 'Rate limit exceeded. Please try again later.'
-          : 'Error: Failed to get response',
+        content:
+          axios.isAxiosError(error) && error.response?.status === 429
+            ? 'Rate limit exceeded. Please try again later.'
+            : 'Error: Failed to get response',
         isUser: false,
-        id: createMessageId()
+        id: createMessageId(),
       };
-        
-      setMessages(prevMessages => setMessagesWithLimit([
-        ...prevMessages,
-        errorMessage
-      ]));
+
+      setMessages((prevMessages) =>
+        setMessagesWithLimit([...prevMessages, errorMessage])
+      );
     } finally {
       setIsLoading(false);
       abortControllerRef.current = null;
     }
-  }, [input, setMessagesWithLimit, createMessageId, isLoading, cancelPreviousRequest]);
+  }, [
+    input,
+    setMessagesWithLimit,
+    createMessageId,
+    isLoading,
+    cancelPreviousRequest,
+  ]);
 
   const handleInput = (e: React.FormEvent<HTMLTextAreaElement>) => {
     const value = e.currentTarget.value;
@@ -139,11 +150,11 @@ const App = () => {
   return (
     <div className="app">
       <h1>TINYTOYS</h1>
-      <h2>A Tiny-Version of real to fun Opened-AI</h2>
+      <h2>A-TINY-VERSION-OF-REAL-TO-SAFE-OPENED-AI</h2>
       <div className="chat-box">
         {messages.map((msg) => (
-  <MessageComponent key={msg.id} msg={msg} />
-))}
+          <MessageComponent key={msg.id} msg={msg} />
+        ))}
       </div>
       <div className="input-area">
         <textarea
@@ -152,13 +163,8 @@ const App = () => {
           onInput={handleInput}
           value={input}
         />
-        <button 
-          onClick={sendMessage} 
-          disabled={isLoading || !input.trim()}
-        >
-          <span>
-            {isLoading ? 'Sending...' : '⌁'}
-          </span>
+        <button onClick={sendMessage} disabled={isLoading || !input.trim()}>
+          {isLoading ? <span className="rolling">⌁⌁⌁</span> : <span>⌁</span>}
         </button>
       </div>
     </div>

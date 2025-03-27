@@ -1,6 +1,7 @@
 <img width="200" src="https://github.com/user-attachments/assets/0823bf10-37f6-42e7-a7ce-933fe8f694d9" />
 
 # @TOYS/TINY
+
 ## AS @TOYS/OSAKA
 
 [Synaptix](https://github.com/vvvvise/synaptix) Urban Art-Mesh, Vynals of OSAKA.
